@@ -1,8 +1,6 @@
 
 package dental;
 
-import static dental.Main.users;
-import java.util.ArrayList;
 
 
 public class Register extends javax.swing.JFrame {
@@ -108,15 +106,16 @@ public class Register extends javax.swing.JFrame {
     }
 
     private void registerActionPerformed(java.awt.event.ActionEvent evt) {
-        
-        User newUser = new User();
-        newUser.id = newID + 1;
-        newUser.name = regName.getText();
-        newUser.email = regEmail.getText();
-        newUser.password = String.valueOf(regPass.getPassword());
-        newUser.type = regCBox.getSelectedItem().toString();
-        newUser.displayUserConsole(newUser.id, newUser.name, newUser.email, newUser.password, newUser.type);
-        users.add(newUser);
+        String type = regCBox.getSelectedItem().toString();
+        User user;
+    	if(type.equals(User.DENTIST_TYPE)) {
+    		user = new Dentist(regName.getText(), regEmail.getText(), String.valueOf(regPass.getPassword()));
+    	}else if(type.equals(User.PATIENT_TYPE)) {
+    		user = new Patient(regName.getText(), regEmail.getText(), String.valueOf(regPass.getPassword()));
+    	}else {
+    		user = new Guest(regName.getText(), regEmail.getText(), String.valueOf(regPass.getPassword()));
+    	}
+        User.addUsers(user);
         dispose();
         
         Login login = new Login();
@@ -126,31 +125,31 @@ public class Register extends javax.swing.JFrame {
         this.dispose();
     }
 
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Register().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new Register().setVisible(true);
+//            }
+//        });
+//    }
 
 
     private javax.swing.JLabel jLabel1;

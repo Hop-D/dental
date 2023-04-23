@@ -1,19 +1,6 @@
 
 package dental;
 
-import static dental.Main.dentists;
-import static dental.Main.users;
-import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.GridLayout;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class GuestFrame extends javax.swing.JFrame {
@@ -28,8 +15,8 @@ public class GuestFrame extends javax.swing.JFrame {
         
         initComponents();
         
-        currentGuest(user.email);
-        currentLog = currentEmail(user.email);
+        currentGuest(user.getEmail());
+        currentLog = currentEmail(user.getEmail());
         showTable();
     }
 
@@ -43,7 +30,7 @@ public class GuestFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         guestList = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(780, 450));
         setPreferredSize(new java.awt.Dimension(780, 450));
         setResizable(false);
@@ -85,7 +72,7 @@ public class GuestFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Email"
+                "ID", "Name", "Email"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -104,7 +91,11 @@ public class GuestFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(guestList);
         if (guestList.getColumnModel().getColumnCount() > 0) {
             guestList.getColumnModel().getColumn(0).setResizable(false);
+            guestList.getColumnModel().getColumn(0).setPreferredWidth(5);
             guestList.getColumnModel().getColumn(1).setResizable(false);
+            guestList.getColumnModel().getColumn(1).setPreferredWidth(150);
+            guestList.getColumnModel().getColumn(2).setResizable(false);
+            guestList.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -194,39 +185,42 @@ public class GuestFrame extends javax.swing.JFrame {
     public void showTable() {
         guestList.setRowHeight(40);
         model = (DefaultTableModel) guestList.getModel();
-        Object rowData[] = new Object[2];
-        for(int i = 0; i < dentists.size(); i++) {
-            rowData[0] = dentists.get(i).getName();
-            rowData[1] = dentists.get(i).getEmail();
-            model.addRow(rowData);
+        Object rowData[] = new Object[3];
+        for(User u: User.getUsers()) {
+        	if(u.getType().equals(User.DENTIST_TYPE)) {
+        		rowData[0] = u.getId();
+        		rowData[1] = u.getName();
+        		rowData[2] = u.getEmail();
+            	model.addRow(rowData);
+        	}
         }
     }
     
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GuestFrame().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(GuestFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new GuestFrame().setVisible(true);
+//            }
+//        });
+//    }
 
     
     private javax.swing.JButton gLogout;

@@ -1,14 +1,12 @@
 
 package dental;
 
-import static dental.Main.users;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
 
-
-    public Login() {
+	public Login() {
         
         initComponents();
     }
@@ -108,29 +106,25 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {
+//        
+//        User log = new User();
+//        log.setEmail(logEmail.getText());
+//        log.setPassword(String.valueOf(logPass.getPassword()));
+//        log.setType(logCBox.getSelectedItem().toString());
+//        
+//        User temp = new User();
         
-        User log = new User();
-        log.email = logEmail.getText();
-        log.password = String.valueOf(logPass.getPassword());
-        log.type = logCBox.getSelectedItem().toString();
-        
-        User temp = new User();
-        
-        boolean userExist = loginUser(users, log.email, log.password, log.type);
-        if(userExist == true) {
-            JOptionPane.showMessageDialog(this, "Login Successful");
-            
-            temp = setCurrentUser(users, log.email, log.password, log.type);
-            
-            if(log.type.equals("Guest")) {
-                
+        try {
+        	User temp = loginUser(logEmail.getText(), String.valueOf(logPass.getPassword()), logCBox.getSelectedItem().toString());
+        	if(temp.getType().equals("Guest")) {
+
                 GuestFrame guest = new GuestFrame(temp);
                 guest.setVisible(true);
                 guest.pack();
                 guest.setLocationRelativeTo(null);
                 
                 this.dispose();
-            } else if(log.type.equals("Patient")) {
+            } else if(temp.getType().equals("Patient")) {
                 
                 PatientFrame patient = new PatientFrame(temp);
                 patient.setVisible(true);
@@ -144,35 +138,41 @@ public class Login extends javax.swing.JFrame {
                 dentist.setVisible(true);
                 dentist.pack();
                 dentist.setLocationRelativeTo(null);
+                
+                this.dispose();
             }
             
+        }catch(UserNotFoundException ex){
+        	JOptionPane.showMessageDialog(this, ex.getMessage());
         }
         
-        
     }
+        
+    
 
     // check if user exists
-    public boolean loginUser(ArrayList<User> users, String email, String password, String type) {
-        for (User user : users) {
+    public User loginUser(String email, String password, String type) throws UserNotFoundException {
+        for (User user : User.getUsers()) {
+        	System.out.println(user.getName());
         	if(user.getEmail().equals(email) && user.getPassword().equals(password) && user.getType().equals(type)) {
-        		return true;
+        		return user;
         	}
         }
-        return false;
+        throw new UserNotFoundException("User not found.");
     }
     
-    public User setCurrentUser(ArrayList<User> users, String email, String password, String type) {
-        
-        User current = new User();
-        
-        for(int i = 0; i < users.size(); i++) {
-            if(users.get(i).email.equals(email) && users.get(i).password.equals(password) && users.get(i).type.equals(type)) {
-                current = users.get(i);
-                return current;
-            }
-        }
-        return current;
-    }
+//    public User setCurrentUser(ArrayList<User> users, String email, String password, String type) {
+//        
+//        User current = new User();
+//        
+//        for(int i = 0; i < users.size(); i++) {
+//            if(users.get(i).getEmail().equals(email) && users.get(i).getPassword().equals(password) && users.get(i).getType().equals(type)) {
+//                current = users.get(i);
+//                return current;
+//            }
+//        }
+//        return current;
+//    }
     
 
     public static void main(String args[]) {
