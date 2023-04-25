@@ -18,7 +18,7 @@ public class Patient extends User implements PatientAppointmentBooker {
         return userAppointments;
     }
 
-    public void addUserAppointment(Appointment appointment) {
+    public void userAppointment(Appointment appointment) {
         this.userAppointments.add(appointment);
     }
     

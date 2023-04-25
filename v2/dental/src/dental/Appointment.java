@@ -17,12 +17,46 @@ public class Appointment {
     private static ArrayList<Appointment> appointments = new ArrayList<Appointment>();
     
     
+    public Appointment(User patient, User dentist, LocalDateTime requestDate, String note) {
+        if(appointments.isEmpty()) 
+        	this.id = 1;
+        else
+        	this.id = appointments.get(appointments.size()-1).getId()+1;
+        
+
+        this.patient = patient;
+        this.dentist = dentist;
+        this.note = note;
+        this.requestDate = requestDate;
+        this.status = "Pending";
+        this.setDate = LocalDateTime.now();
+    }
+    
+    public Appointment(User patient, User dentist, LocalDateTime requestDate, String note, boolean bool) {
+        if(appointments.isEmpty()) 
+        	this.id = 1;
+        else
+        	this.id = appointments.get(appointments.size()-1).getId()+1;
+        
+
+        this.patient = patient;
+        this.dentist = dentist;
+        this.note = note;
+        this.requestDate = requestDate;
+        this.status = "Pending";
+        this.setDate = LocalDateTime.now();
+        Appointment.addAppointment(this);
+    }
+    
+     
     public static ArrayList<Appointment> getAppointments() {
 		return appointments;
 	}
 
 	public static void addAppointment(Appointment appointments) {
-		Appointment.appointments.add(appointments);
+		Appointment.getAppointments().add(appointments);
+		((Dentist) appointments.getDentist()).userAppointments(appointments);
+		((Patient) appointments.getPatient()).userAppointment(appointments);
 	}
 
 	public int getId() {
@@ -83,22 +117,6 @@ public class Appointment {
 	}
 
     
-    public Appointment(User patient, User dentist, LocalDateTime requestDate, String note) {
-        if(appointments.isEmpty()) 
-        	this.id = 1;
-        else
-        	this.id = appointments.get(appointments.size()-1).getId()+1;
-        
-
-        this.patient = patient;
-        this.dentist = dentist;
-        this.note = note;
-        this.requestDate = requestDate;
-        this.status = "Pending";
-        this.setDate = LocalDateTime.now();
-    }
-    
-    
     public void displayAppointments(ArrayList<Appointment> appointments) {
         for(int i = 0; i < appointments.size(); i++) {
             System.out.println(appointments.get(i).id + " " + appointments.get(i).getDentist().getName() + " " + appointments.get(i).getPatient().getName() + " " + appointments.get(i).getRequestDate() + " " + appointments.get(i).getSetDate() + " " + appointments.get(i).getNote() + " " + appointments.get(i).getStatus());
@@ -116,11 +134,4 @@ public class Appointment {
     }
 
 
-    
-//    public void displayAppointmentConsole(int id, String name, String email, String contact, String sentDate, String requestDate, String note, String dentist, String status) {
-//            System.out.println(this.id + " " + this.name + " " + this.email + " " + this.contact + " " + this.sentDate + " " + this.requestDate + " " + this.note + " " + this.dentist + " " + this.status);
-//    }
-    
-    
-    
 }

@@ -7,6 +7,7 @@ public class Dentist extends User implements DentistAppointmentManager{
     
 	private ArrayList<Appointment> approvedAppointments;
 	private ArrayList<Appointment> declinedAppointments;
+	private ArrayList<Appointment> userAppointments;
 	private ArrayList<Message> receivedMessages;
     
     // Constructor
@@ -14,6 +15,7 @@ public class Dentist extends User implements DentistAppointmentManager{
         super(User.generateID(), name, email, password, User.DENTIST_TYPE);
         this.approvedAppointments = new ArrayList<Appointment>();
         this.declinedAppointments = new ArrayList<Appointment>();
+        this.userAppointments = new ArrayList<Appointment>();
         this.receivedMessages = new ArrayList<Message>();
     } 
     
@@ -25,6 +27,9 @@ public class Dentist extends User implements DentistAppointmentManager{
 
 	public ArrayList<Appointment> getDeclinedAppointments() {
 		return declinedAppointments;
+	}
+	public ArrayList<Appointment> getUserAppointments() {
+		return userAppointments;
 	}
 
 
@@ -46,8 +51,11 @@ public class Dentist extends User implements DentistAppointmentManager{
     			appointment.setStatus(DECLINE_APP);
     		}
     	}
-        
     }	
+    
+    public void userAppointments(Appointment appointment) {
+    	userAppointments.add(appointment);
+    }
     
     
     

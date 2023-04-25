@@ -13,8 +13,8 @@ public class Main {
     	User.addUsers(new Dentist("Dentist One", "d1", "pass"));
     	User.addUsers(new Dentist("Dentist Two", "d2@email.com", "pass"));
 	    
-	    Appointment.addAppointment(new Appointment(User.getUsers().get(0), User.getUsers().get(3), LocalDateTime.of(2023, 2, 12, 0, 0), "First Appointment"));
-	    Appointment.addAppointment(new Appointment(User.getUsers().get(1), User.getUsers().get(3), LocalDateTime.of(2023, 5, 26, 0, 0), "Second Appointment"));
+//	    Appointment.addAppointment(new Appointment(User.getUsers().get(0), User.getUsers().get(4), LocalDateTime.of(2023, 2, 12, 0, 0), "First Appointment", true));
+//	    Appointment.addAppointment(new Appointment(User.getUsers().get(1), User.getUsers().get(5), LocalDateTime.of(2023, 5, 26, 0, 0), "Second Appointment", true));
 	    
 	    try {
 	    	Message one = new Message(User.getUser(4), User.getUser(6), "Hello, how are you!");

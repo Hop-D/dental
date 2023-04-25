@@ -173,9 +173,6 @@ public class GuestFrame extends javax.swing.JFrame {
         model = (DefaultTableModel) guestList.getModel();
         int rowIndex = guestList.getSelectedRow();
         
-//        User sender = currentLog;
-//        User receiver = model.getValueAt(rowIndex, 1).toString();
-//        
         
 		try {
 			MessageFrame message = new MessageFrame(gLog, User.getUser((int) model.getValueAt(rowIndex, 0)));

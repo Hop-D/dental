@@ -68,8 +68,8 @@ public class Message {
 		return messages;
 	}
 
-	public static void addMessages(Message messages) {
-		Message.getMessages().add(messages);
+	public static void addMessages(Message message) {
+		Message.getMessages().add(message);
 	}
     
 	public static Message getMessageInfo(int id) throws MessageNotFoundException{

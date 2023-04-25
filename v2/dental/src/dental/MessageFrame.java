@@ -17,41 +17,6 @@ public class MessageFrame extends javax.swing.JFrame {
 		return messages;
 	}
 
-//	public static void setMessages(Message messages) {
-//		Message.messages.add(messages);
-//	}
-
-//	public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
-//
-//    public String getSender() {
-//        return sender;
-//    }
-//
-//    public void setSender(String sender) {
-//        this.sender = sender;
-//    }
-//
-//    public String getMessage() {
-//        return message;
-//    }
-//
-//    public void setMessage(String message) {
-//        this.message = message;
-//    }
-//
-//    public String getReceiver() {
-//        return receiver;
-//    }
-//
-//    public void setReceiver(String receiver) {
-//        this.receiver = receiver;
-//    }
     
     /**
      * Creates new form Message
@@ -62,11 +27,6 @@ public class MessageFrame extends javax.swing.JFrame {
         receiver = rec;
         setPeople(sen, rec);
     }
-    
-//    public Message(String sender, String receiver) {
-//        initComponents();
-//        setPeople(sender, receiver);
-//    }
     
 
     
@@ -177,7 +137,7 @@ public class MessageFrame extends javax.swing.JFrame {
         Message newMessage = new Message(sender, receiver, jTextArea1.getText());
         
         try {
-            messages.add(newMessage);
+            Message.addMessages(newMessage);
             newMessage.performSend();
             JOptionPane.showMessageDialog(this, "Message Sent");
         } catch(Exception e) {

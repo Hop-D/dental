@@ -115,11 +115,11 @@ public class DentistFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Date", "Status"
+                "ID", "Name", "Date", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -135,7 +135,9 @@ public class DentistFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(6);
             jTable1.getColumnModel().getColumn(1).setResizable(false);
+            jTable1.getColumnModel().getColumn(2).setResizable(false);
             jTable1.getColumnModel().getColumn(2).setResizable(false);
         }
 
@@ -544,15 +546,12 @@ public class DentistFrame extends javax.swing.JFrame {
         }
     }
     
-//    public User currentUser(User dentist) {
-//        return dentist;
-//    }
     
     public void showAll() {
         model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
         Object[] rowData = new Object[4];
-        for(Appointment app: Appointment.getAppointments()) {
+        for(Appointment app: dLog.getUserAppointments()) {
         	if(app.getDentist().getId() == dLog.getId()) {
         		rowData[0] = app.getId();
         		rowData[1] = app.getPatient().getName();
@@ -568,7 +567,6 @@ public class DentistFrame extends javax.swing.JFrame {
         model2.setRowCount(0);
         Object[] rowData = new Object[5];
         for(Appointment app: dLog.getApprovedAppointments()) {
-		    if(app.getDentist().getId() == dLog.getId() && app.getStatus().equals("Approved")) {
 		    	rowData[0] = app.getPatient().getName();
 		    	rowData[1] = app.getPatient().getEmail();
 		    	rowData[2] = app.getPatient().getContact();
@@ -576,8 +574,9 @@ public class DentistFrame extends javax.swing.JFrame {
 		        rowData[4] = app.getRequestDate();
 		        
 		        model2.addRow(rowData);
-		    }
 		}
+        
+
     }
     
     public void showDeclined() {

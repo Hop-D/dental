@@ -8,4 +8,5 @@ public interface DentistAppointmentManager {
 
 	static final String DECLINE_APP = "Declined";
 	static final String APPROVE_APP = "Approved";
+	static final String PENDING_APP = "Pending";
 }
