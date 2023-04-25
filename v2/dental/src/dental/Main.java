@@ -9,6 +9,7 @@ public class Main {
     	User.addUsers(new Patient("nyok", "nyok", "nyok"));
     	User.addUsers(new Patient("test", "test", "test"));
     	User.addUsers(new Guest("jem", "jem", "jem"));
+    	User.addUsers(new Guest("Guest Guest", "guest", "guest"));
     	User.addUsers(new Dentist("Dentist One", "d1", "pass"));
     	User.addUsers(new Dentist("Dentist Two", "d2@email.com", "pass"));
 	    
