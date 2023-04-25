@@ -27,10 +27,10 @@ public class GuestFrame extends javax.swing.JFrame {
         gLogout = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         guestList = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(780, 450));
-        setPreferredSize(new java.awt.Dimension(780, 450));
         setResizable(false);
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 102));
@@ -70,11 +70,11 @@ public class GuestFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Email"
+                "Name", "Email"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -89,21 +89,29 @@ public class GuestFrame extends javax.swing.JFrame {
         jScrollPane2.setViewportView(guestList);
         if (guestList.getColumnModel().getColumnCount() > 0) {
             guestList.getColumnModel().getColumn(0).setResizable(false);
-            guestList.getColumnModel().getColumn(0).setPreferredWidth(5);
             guestList.getColumnModel().getColumn(1).setResizable(false);
-            guestList.getColumnModel().getColumn(1).setPreferredWidth(150);
-            guestList.getColumnModel().getColumn(2).setResizable(false);
-            guestList.getColumnModel().getColumn(2).setPreferredWidth(150);
         }
+
+        jButton1.setText("VIEW SENT MESSAGES");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addComponent(gLogout)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addComponent(jButton1))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(99, 99, 99)
+                        .addComponent(gLogout)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(62, 62, 62))
         );
@@ -112,7 +120,9 @@ public class GuestFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap(301, Short.MAX_VALUE)
+                        .addContainerGap(266, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(gLogout))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
@@ -125,7 +135,7 @@ public class GuestFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 804, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,7 +157,7 @@ public class GuestFrame extends javax.swing.JFrame {
         );
 
         pack();
-    }
+    }// </editor-fold> 
 
     private void gLogoutActionPerformed(java.awt.event.ActionEvent evt) {
         
@@ -178,6 +188,11 @@ public class GuestFrame extends javax.swing.JFrame {
 		}
 
     }
+	
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                         
+        // TODO add your handling code here:
+    } 
+	
     public void currentGuest(String email) {
         jLabel1.setText("Welcome Guest " + email);
     }
@@ -229,6 +244,7 @@ public class GuestFrame extends javax.swing.JFrame {
     
     private javax.swing.JButton gLogout;
     private javax.swing.JTable guestList;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
