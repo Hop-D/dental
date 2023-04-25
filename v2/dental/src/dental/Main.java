@@ -17,7 +17,7 @@ public class Main {
 	    Appointment.addAppointment(new Appointment(User.getUsers().get(1), User.getUsers().get(3), LocalDateTime.of(2023, 5, 26, 0, 0), "Second Appointment"));
 	    
 	    try {
-	    	Message one = new Message(User.getUser(3), User.getUser(4), "Hello, how are you!");
+	    	Message one = new Message(User.getUser(4), User.getUser(6), "Hello, how are you!");
 	    	one.performSend();
 			Message.addMessages(one);
 			Message two = new Message(User.getUser(3), User.getUser(5), "Hello, how are you!");

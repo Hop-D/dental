@@ -71,7 +71,7 @@ public class DentistFrame extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
-	jLabel8 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -131,6 +131,7 @@ public class DentistFrame extends javax.swing.JFrame {
                 jTable1MouseClicked(evt);
             }
         });
+
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setResizable(false);
@@ -315,21 +316,30 @@ public class DentistFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Guest", "Message"
+                "Msg. ID", "Guest", "Message"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
+        
         jScrollPane4.setViewportView(jTable4);
         if (jTable4.getColumnModel().getColumnCount() > 0) {
             jTable4.getColumnModel().getColumn(0).setResizable(false);
+            jTable4.getColumnModel().getColumn(0).setPreferredWidth(6);
             jTable4.getColumnModel().getColumn(1).setResizable(false);
+            jTable4.getColumnModel().getColumn(2).setResizable(false);
         }
 
         jLabel8.setText("Sent by:");
@@ -448,27 +458,28 @@ public class DentistFrame extends javax.swing.JFrame {
         }
        
     }
-    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
     	   
     	model4 = (DefaultTableModel) jTable4.getModel();
         int rowIndex = jTable4.getSelectedRow();
         
         try {
         	Message message = Message.getMessageInfo((int)model.getValueAt(rowIndex, 0));
-        	
-        	jLabel1.setText("Sent by: " + message.getSender().getName());
-            jLabel2.setText("Sender email: " + message.getSender().getEmail());
-            jLabel3.setText("Contact #: " + message.getSender().getContact());
-            jLabel4.setText("Sent Date: " + message.getSent());
-            jLabel6.setText("Message: " + message.getMessage());
+        	System.out.println(message.getId()+ " " + message.getMessage() +" " + message.getSent());
+
+        	jLabel8.setText("Sent by: " + message.getSender().getName());
+            jLabel9.setText("Sender email: " + message.getSender().getEmail());
+            jLabel10.setText("Contact #: " + message.getSender().getContact());
+            jLabel11.setText("Sent Date: " + message.getSent());
+            jLabel12.setText("Message: " + message.getMessage());
             
-            trueState();
         }catch(MessageNotFoundException ex) {
         	JOptionPane.showMessageDialog(this, ex.getMessage());
         	
         }
        
-    }//GEN-LAST:event_jTable1MouseClicked
+    }//GEN-LAST:event_jTable4MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dLog.approveAppointment(temp);
@@ -510,6 +521,7 @@ public class DentistFrame extends javax.swing.JFrame {
         jButton1.setVisible(false);
         jButton2.setVisible(false);   
     }
+    
     
     public void trueState() {
         jLabel1.setVisible(true);
@@ -588,11 +600,12 @@ public class DentistFrame extends javax.swing.JFrame {
     public void showMessage() {
         model4 = (DefaultTableModel) jTable4.getModel();
         model4.setRowCount(0);
-        Object[] rowData = new Object[2];
+        Object[] rowData = new Object[3];
         
         for(Message mess: dLog.getReceivedMessages()) {
-        	rowData[0] = mess.getSender().getName();
-            rowData[1] = mess.getMessage();
+        	rowData[0] = mess.getId();
+        	rowData[1] = mess.getSender().getName();
+            rowData[2] = mess.getMessage();
             model4.addRow(rowData);
         }
     }
