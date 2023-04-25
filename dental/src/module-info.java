@@ -3,4 +3,6 @@ module dental {
 	requires java.logging;
 	requires jgoodies.looks;
 	requires jgoodies.common;
+	requires jcalendar;
+    requires junit;
 }

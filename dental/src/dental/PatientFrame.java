@@ -1,24 +1,10 @@
 
 package dental;
 
-import static dental.Main.dentists;
-import static dental.Main.appointments;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.awt.*;
+import java.time.*;
+import java.util.*;
+import javax.swing.*;
 
 
 public class PatientFrame extends javax.swing.JFrame {
@@ -33,7 +19,7 @@ public class PatientFrame extends javax.swing.JFrame {
         initComponents();
         populateDentist();
         setPatient(user);
-        pLog = currentPatient(user);
+        pLog = user;
     }
 
 
@@ -133,9 +119,7 @@ public class PatientFrame extends javax.swing.JFrame {
         });
 
         jLabel7.setText("Choose Dentist: ");
-
-        pDentist.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+      
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -234,6 +218,8 @@ public class PatientFrame extends javax.swing.JFrame {
 
         pack();
     }
+    
+    
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
     	
@@ -247,32 +233,25 @@ public class PatientFrame extends javax.swing.JFrame {
 
     private void pRequestActionPerformed(java.awt.event.ActionEvent evt) {
 
-        Date date = new Date();
-        
-        Appointment newApp = new Appointment();
-        newApp.id = newApp.setNewID(appointments);
-        newApp.name = pName.getText();
-        newApp.email = pEmail.getText();
-        newApp.contact = pContact.getText();
-        newApp.sentDate = date.toString();
-        newApp.requestDate = pCalendar.getDate().toString();
-        newApp.note = pNote.getText();
-        newApp.dentist = pDentist.getSelectedItem().toString();
-         
-        appointments.add(newApp);
-        
-        int a = JOptionPane.showConfirmDialog(this, "Appointment Sent. Exit the system?");
-        if(a == JOptionPane.YES_OPTION) {
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-            this.dispose();
-            WelcomeClass welcome = new WelcomeClass();
-            welcome.setVisible(true);
-            welcome.pack();
-            welcome.setLocationRelativeTo(null);
+        try {
+        	pLog.bookAppointment(User.getUser((int)pDentist.getSelectedItem()), pCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), pNote.getText());
+        	pLog.setContact(pContact.getText());
+        	int a = JOptionPane.showConfirmDialog(this, "Appointment Sent. Exit the system?");
+        	 if(a == JOptionPane.YES_OPTION) {
+                 setDefaultCloseOperation(EXIT_ON_CLOSE);
+                 this.dispose();
+                 WelcomeClass welcome = new WelcomeClass();
+                 welcome.setVisible(true);
+                 welcome.pack();
+                 welcome.setLocationRelativeTo(null);
+             }
+             
+             clearPatient();
+             
+        }catch(UserNotFoundException ex){
+        	JOptionPane.showConfirmDialog(this, ex.getMessage());
         }
-        
-        clearPatient();
-        newApp.displayAppointments(appointments);
+            
     }
 
     private void pCheckActionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,16 +262,16 @@ public class PatientFrame extends javax.swing.JFrame {
     
     
     public void populateDentist() {
-        List list = new ArrayList();
-        for(int i = 0; i < dentists.size(); i++) {
-            list.add(dentists.get(i).getName());
-        }
-        String[] dentistArr = new String[list.size()];
-        for(int i = 0; i < list.size(); i++) {
-            dentistArr[i] = (String) list.get(i);
+        Integer[] dentistArr = new Integer[User.countUserType(User.DENTIST_TYPE)];
+        int i = 0;
+        for(User u: User.getUsers()) {
+        	if(u.getType().equals(User.DENTIST_TYPE)) {
+        		dentistArr[i] = u.getId();
+        		i++;
+        	}
         }
         
-        DefaultComboBoxModel dm = new DefaultComboBoxModel(dentistArr);
+        DefaultComboBoxModel<Integer> dm = new DefaultComboBoxModel<Integer>(dentistArr);
         pDentist.setModel(dm);
     }
     
@@ -301,8 +280,8 @@ public class PatientFrame extends javax.swing.JFrame {
     }
     
     public void setPatient(User user) {
-        pName.setText(user.name);
-        pEmail.setText(user.email);
+        pName.setText(user.getName());
+        pEmail.setText(user.getEmail());
         
         pName.setEditable(false);
         pEmail.setEditable(false);
@@ -310,7 +289,7 @@ public class PatientFrame extends javax.swing.JFrame {
     
     public void clearPatient() {
         Calendar time = Calendar.getInstance();
-        pContact.setText("");
+        pContact.setText(pLog.getContact());
         pCalendar.setCalendar(time);
         pNote.setText("");
     }
@@ -327,16 +306,16 @@ public class PatientFrame extends javax.swing.JFrame {
         newFrame.add(lblTitle, BorderLayout.NORTH);
 
         String[] columnNames = {"Dentist", "Date", "Status"};
-        Object[][] data = new Object[appointments.size()][3];
-        for(int i = 0; i < appointments.size(); i++) {
-            Appointment temp = appointments.get(i);
-            if(temp.name.equals(pLog.name) && temp.email.equals(pLog.email)) {
-                data[i][0] = temp.dentist;
-                data[i][1] = temp.requestDate;
-                data[i][2] = temp.status;
-            }
-        
+        Object[][] data = new Object[pLog.getUserAppointments().size()][3];
+        int i = 0;
+        for(Appointment app: pLog.getUserAppointments()) {
+        	data[i][0] = app.getDentist().getName();
+        	data[i][1] = app.getRequestDate();
+        	data[i][2] = app.getStatus();
+        	i++;
+        	app.displayAppointments(pLog.getUserAppointments());
         }
+        
         
         JTable table = new JTable(data, columnNames);
         table.setPreferredScrollableViewportSize(new Dimension(500, 200));
@@ -393,7 +372,7 @@ public class PatientFrame extends javax.swing.JFrame {
     private com.toedter.calendar.JCalendar pCalendar;
     private javax.swing.JButton pCheck;
     private javax.swing.JTextField pContact;
-    private javax.swing.JComboBox<String> pDentist;
+    private javax.swing.JComboBox<Integer> pDentist;
     private javax.swing.JTextField pEmail;
     private javax.swing.JTextField pName;
     private javax.swing.JTextArea pNote;
