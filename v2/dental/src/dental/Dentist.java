@@ -1,19 +1,20 @@
 
 package dental;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Dentist extends User {
+public class Dentist extends User implements DentistAppointmentManager{
     
 	private ArrayList<Appointment> approvedAppointments;
 	private ArrayList<Appointment> declinedAppointments;
+	private ArrayList<Message> receivedMessages;
     
     // Constructor
     public Dentist(String name, String email, String password) {
         super(User.generateID(), name, email, password, User.DENTIST_TYPE);
         this.approvedAppointments = new ArrayList<Appointment>();
         this.declinedAppointments = new ArrayList<Appointment>();
+        this.receivedMessages = new ArrayList<Message>();
     } 
     
     
@@ -46,43 +47,22 @@ public class Dentist extends User {
     		}
     	}
         
-    }
+    }	
     
-
-	public void viewAllApproved(ArrayList<Appointment> appointment) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void bookAppointment(User dentist, LocalDateTime requestDate, String note) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void cancelRequest(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected String getContact() {
-		// TODO Auto-generated method stub
-		return null;
+    
+    
+    public ArrayList<Message> getReceivedMessages() {
+		return receivedMessages;
 	}
 
 
-	@Override
-	protected void setContact(String string) {
-		// TODO Auto-generated method stub
-		
+	public void addReceivedMessages(Message receivedMessage) {
+		this.receivedMessages.add(receivedMessage);
 	}
 
-	@Override
-	protected ArrayList<Appointment> getUserAppointments() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+	public void receiveMessage(Message message) {
+    	this.receivedMessages.add(message);
+    }
 
 }

@@ -1,58 +1,30 @@
 package dental;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Guest extends User{
+	
+	private ArrayList<Message> sentMessages;
     
-    // Constructor
     public Guest(String name, String email, String password) {
         super(User.generateID(), name, email, password, User.GUEST_TYPE);
-    } 
-    
-    // Getters and setters
-   
-    
-    // Methods
-    public void sendMessageToDentist(Dentist dentist, String message) {
-        // send message to the dentist
+        this.sentMessages = new ArrayList<Message>();
     }
 
-	@Override
-	public void approveAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
+	public ArrayList<Message> getSentMessages() {
+		return sentMessages;
 	}
 
-	@Override
-	public void declineAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
+	public void addSentMessages(Message sentMessage) {
+		this.sentMessages.add(sentMessage);
+	} 
+	
+	public void sendMessage(Message message) {
+		this.sentMessages.add(message);
 	}
+    
+    
 
-
-	@Override
-	public void bookAppointment(User dentist, LocalDateTime requestDate, String note) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void cancelRequest(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected String getContact() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected void setContact(String string) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }

@@ -114,6 +114,8 @@ public class Appointment {
     	}
         throw new AppointmentNotFoundException("Appointment does not exist.");
     }
+
+
     
 //    public void displayAppointmentConsole(int id, String name, String email, String contact, String sentDate, String requestDate, String note, String dentist, String status) {
 //            System.out.println(this.id + " " + this.name + " " + this.email + " " + this.contact + " " + this.sentDate + " " + this.requestDate + " " + this.note + " " + this.dentist + " " + this.status);

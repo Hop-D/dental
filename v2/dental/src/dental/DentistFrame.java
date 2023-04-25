@@ -18,7 +18,7 @@ public class DentistFrame extends javax.swing.JFrame {
     private DefaultTableModel model2;
     private DefaultTableModel model3;
     private DefaultTableModel model4;
-    User dLog;
+    Dentist dLog;
     static Appointment temp;
     /**  
      * Creates new form DentistFrame
@@ -27,7 +27,7 @@ public class DentistFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public DentistFrame(User user) {
+    public DentistFrame(Dentist user) {
         initComponents();
         dLog = user;
         initialState();
@@ -114,7 +114,7 @@ public class DentistFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -406,7 +406,7 @@ public class DentistFrame extends javax.swing.JFrame {
         	
         	jLabel1.setText("Name: " + temp.getPatient().getName());
             jLabel2.setText("Email: " + temp.getPatient().getEmail());
-            //jLabel3.setText("Contact #: " + temp.getPatient().getContact());
+            jLabel3.setText("Contact #: " + temp.getPatient().getContact());
             jLabel4.setText("Send Date: " + temp.getSetDate());
             jLabel5.setText("Request Date: " + temp.getRequestDate());
             jLabel6.setText("Notes: " + temp.getNote());
@@ -417,15 +417,31 @@ public class DentistFrame extends javax.swing.JFrame {
         	JOptionPane.showMessageDialog(this, ex.getMessage());
         }
        
-//        temp = appointments.get(rowIndex);
+    }
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+    	   
+    	model4 = (DefaultTableModel) jTable4.getModel();
+        int rowIndex = jTable4.getSelectedRow();
         
-        
+        try {
+        	Message message = Message.getMessageInfo((int)model.getValueAt(rowIndex, 0));
+        	
+        	jLabel1.setText("Sent by: " + message.getSender().getName());
+            jLabel2.setText("Sender email: " + message.getSender().getEmail());
+            jLabel3.setText("Contact #: " + message.getSender().getContact());
+            jLabel4.setText("Sent Date: " + message.getSent());
+            jLabel6.setText("Message: " + message.getMessage());
+            
+            trueState();
+        }catch(MessageNotFoundException ex) {
+        	JOptionPane.showMessageDialog(this, ex.getMessage());
+        	
+        }
        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // APPROVE
-    	dLog.approveAppointment(temp);
+        dLog.approveAppointment(temp);
         temp.displayAppointments(Appointment.getAppointments());
         trueState();
         showAll();
@@ -435,7 +451,6 @@ public class DentistFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // DECLINE
         dLog.declineAppointment(temp);
         temp.displayAppointments(Appointment.getAppointments());
         trueState();
@@ -511,16 +526,16 @@ public class DentistFrame extends javax.swing.JFrame {
         model2.setRowCount(0);
         Object[] rowData = new Object[5];
         for(Appointment app: dLog.getApprovedAppointments()) {
-            if(app.getDentist().getId() == dLog.getId() && app.getStatus().equals("Approved")) {
-            	rowData[0] = app.getPatient().getName();
-            	rowData[1] = app.getPatient().getEmail();
-            	rowData[2] = app.getPatient().getContact();
-                rowData[3] = app.getSetDate();
-                rowData[4] = app.getRequestDate();
-                
-                model2.addRow(rowData);
-            }
-        }
+		    if(app.getDentist().getId() == dLog.getId() && app.getStatus().equals("Approved")) {
+		    	rowData[0] = app.getPatient().getName();
+		    	rowData[1] = app.getPatient().getEmail();
+		    	rowData[2] = app.getPatient().getContact();
+		        rowData[3] = app.getSetDate();
+		        rowData[4] = app.getRequestDate();
+		        
+		        model2.addRow(rowData);
+		    }
+		}
     }
     
     public void showDeclined() {
@@ -528,68 +543,29 @@ public class DentistFrame extends javax.swing.JFrame {
         model3.setRowCount(0);
         Object[] rowData = new Object[5];
         for(Appointment app: dLog.getDeclinedAppointments()) {
-            if(app.getDentist().getId() == dLog.getId() && app.getStatus().equals("Declined")) {
-            	rowData[0] = app.getPatient().getName();
-            	rowData[1] = app.getPatient().getEmail();
-            	rowData[2] = app.getPatient().getContact();
-                rowData[3] = app.getSetDate();
-                rowData[4] = app.getRequestDate();
-                
-                model3.addRow(rowData);
-            }
-        }
+		    if(app.getDentist().getId() == dLog.getId() && app.getStatus().equals("Declined")) {
+		    	rowData[0] = app.getPatient().getName();
+		    	rowData[1] = app.getPatient().getEmail();
+		    	rowData[2] = app.getPatient().getContact();
+		        rowData[3] = app.getSetDate();
+		        rowData[4] = app.getRequestDate();
+		        
+		        model3.addRow(rowData);
+		    }
+		}
     }
     
     public void showMessage() {
         model4 = (DefaultTableModel) jTable4.getModel();
         model4.setRowCount(0);
         Object[] rowData = new Object[2];
-        for(int i = 0; i < Message.getMessages().size(); i++) {
-            if(Message.getMessages().get(i).receiver.equals(dLog.getName())) {
-                rowData[0] = Message.getMessages().get(i).sender;
-                rowData[1] = Message.getMessages().get(i).message;
-                
-                model4.addRow(rowData);
-            }
+        
+        for(Message mess: dLog.getReceivedMessages()) {
+        	rowData[0] = mess.getSender().getName();
+            rowData[1] = mess.getMessage();
+            model4.addRow(rowData);
         }
     }
-    
-    
-    
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(DentistFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(DentistFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(DentistFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(DentistFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new DentistFrame().setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

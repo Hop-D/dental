@@ -4,19 +4,17 @@ package dental;
 import javax.swing.table.DefaultTableModel;
 
 public class GuestFrame extends javax.swing.JFrame {
-
+	
     private DefaultTableModel model;
-    String currentLog;
-    
+    private String currentLog;
+    private Guest gLog;
     public GuestFrame() {
         initComponents();
     }
-    public GuestFrame(User user) {
+    public GuestFrame(Guest user) {
         
         initComponents();
-        
-        currentGuest(user.getEmail());
-        currentLog = currentEmail(user.getEmail());
+        gLog = user;
         showTable();
     }
 
@@ -76,7 +74,7 @@ public class GuestFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -165,13 +163,19 @@ public class GuestFrame extends javax.swing.JFrame {
         model = (DefaultTableModel) guestList.getModel();
         int rowIndex = guestList.getSelectedRow();
         
-        String sender = currentLog;
-        String receiver = model.getValueAt(rowIndex, 1).toString();
+//        User sender = currentLog;
+//        User receiver = model.getValueAt(rowIndex, 1).toString();
+//        
         
-        Message message = new Message(sender, receiver);
-        message.setVisible(true);
-        message.pack();
-        message.setLocationRelativeTo(null);
+		try {
+			MessageFrame message = new MessageFrame(gLog, User.getUser((int) model.getValueAt(rowIndex, 0)));
+	        message.setVisible(true);
+	        message.pack();
+	        message.setLocationRelativeTo(null);
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
     public void currentGuest(String email) {

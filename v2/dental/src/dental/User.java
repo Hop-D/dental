@@ -1,16 +1,16 @@
 
 package dental;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public abstract class User implements AppointmentManager{
+public abstract class User {
     
     private int id;
     private String name;
     private String email;
     private String password;
     private String type;
+    private String contact;
     
     private static ArrayList<User> users = new ArrayList<User>();
     
@@ -68,7 +68,15 @@ public abstract class User implements AppointmentManager{
     }
    
     
-    public User(int id, String name, String email, String password, String type) {
+    public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public User(int id, String name, String email, String password, String type) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -106,21 +114,27 @@ public abstract class User implements AppointmentManager{
     	}
     	return i;
     }
+
+	
+
+//	protected ArrayList<Appointment> getUserAppointments() throws MethodAccessDeniedException {
+//		throw new MethodAccessDeniedException();
+//	}
+//
+//	protected void approveAppointment(Appointment temp) throws MethodAccessDeniedException {
+//		throw new MethodAccessDeniedException();
+//	}
+//
+//	protected void declineAppointment(Appointment temp) throws MethodAccessDeniedException {
+//		throw new MethodAccessDeniedException();
+//	}
+//
+//	protected ArrayList<Appointment> getApprovedAppointments() throws MethodAccessDeniedException {
+//		throw new MethodAccessDeniedException();
+//	}
+//
+//	protected ArrayList<Appointment> getDeclinedAppointments() throws MethodAccessDeniedException {
+//		throw new MethodAccessDeniedException();
+//	}
     
-    public abstract void approveAppointment(Appointment appointment);
-	public abstract void declineAppointment(Appointment appointment);
-	public abstract void bookAppointment(User dentist, LocalDateTime requestDate, String note);
-	public abstract void cancelRequest(Appointment appointment);
-
-	protected abstract String getContact();
-
-	protected abstract void setContact(String string);
-
-	protected abstract ArrayList<Appointment> getUserAppointments();
-
-	protected abstract ArrayList<Appointment> getApprovedAppointments();
-
-	protected abstract ArrayList<Appointment> getDeclinedAppointments();
-
-//	protected abstract ArrayList<Appointment> getUserAppointments();
 }

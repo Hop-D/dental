@@ -9,13 +9,13 @@ import javax.swing.*;
 
 public class PatientFrame extends javax.swing.JFrame {
 
-    User pLog;
+    Patient pLog;
 
     public PatientFrame() {
         initComponents();
     }
     
-    public PatientFrame(User user) {
+    public PatientFrame(Patient user) {
         initComponents();
         populateDentist();
         setPatient(user);
@@ -25,7 +25,7 @@ public class PatientFrame extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        new com.toedter.calendar.JCalendar();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -60,7 +60,12 @@ public class PatientFrame extends javax.swing.JFrame {
         pCheck.setText("CHECK APPOINTMENTS");
         pCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pCheckActionPerformed(evt);
+                try {
+					pCheckActionPerformed(evt);
+				} catch (MethodAccessDeniedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         });
 
@@ -107,7 +112,7 @@ public class PatientFrame extends javax.swing.JFrame {
         pRequest.setText("SEND APPOINTMENT REQUEST");
         pRequest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pRequestActionPerformed(evt);
+					pRequestActionPerformed(evt);
             }
         });
 
@@ -234,7 +239,8 @@ public class PatientFrame extends javax.swing.JFrame {
     private void pRequestActionPerformed(java.awt.event.ActionEvent evt) {
 
         try {
-        	pLog.bookAppointment(User.getUser((int)pDentist.getSelectedItem()), pCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), pNote.getText());
+        	int choiceDentist = Integer.parseInt(pDentist.getSelectedItem().toString().split(" ")[0]);
+        	pLog.bookAppointment(User.getUser(choiceDentist), pCalendar.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime(), pNote.getText(), pContact.getText());
         	pLog.setContact(pContact.getText());
         	int a = JOptionPane.showConfirmDialog(this, "Appointment Sent. Exit the system?");
         	 if(a == JOptionPane.YES_OPTION) {
@@ -254,7 +260,7 @@ public class PatientFrame extends javax.swing.JFrame {
             
     }
 
-    private void pCheckActionPerformed(java.awt.event.ActionEvent evt) {
+    private void pCheckActionPerformed(java.awt.event.ActionEvent evt) throws MethodAccessDeniedException {
         
         patientApp();
     }
@@ -262,16 +268,17 @@ public class PatientFrame extends javax.swing.JFrame {
     
     
     public void populateDentist() {
-        Integer[] dentistArr = new Integer[User.countUserType(User.DENTIST_TYPE)];
+        String[] dentistArr = new String[User.countUserType(User.DENTIST_TYPE)];
         int i = 0;
         for(User u: User.getUsers()) {
         	if(u.getType().equals(User.DENTIST_TYPE)) {
-        		dentistArr[i] = u.getId();
+        		String choiceDentist = u.getId() + " | " + u.getName();
+        		dentistArr[i] = choiceDentist;
         		i++;
         	}
         }
         
-        DefaultComboBoxModel<Integer> dm = new DefaultComboBoxModel<Integer>(dentistArr);
+        DefaultComboBoxModel<String> dm = new DefaultComboBoxModel<String>(dentistArr);
         pDentist.setModel(dm);
     }
     
@@ -279,7 +286,7 @@ public class PatientFrame extends javax.swing.JFrame {
         return user;
     }
     
-    public void setPatient(User user) {
+    public void setPatient(Patient user) {
         pName.setText(user.getName());
         pEmail.setText(user.getEmail());
         
@@ -294,7 +301,7 @@ public class PatientFrame extends javax.swing.JFrame {
         pNote.setText("");
     }
     
-    public void patientApp() {
+    public void patientApp() throws MethodAccessDeniedException {
         
         JFrame newFrame = new JFrame("Your Appointments");
         newFrame.setSize(600, 400);
@@ -357,7 +364,6 @@ public class PatientFrame extends javax.swing.JFrame {
     
     
     private javax.swing.JButton jButton2;
-    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -372,7 +378,7 @@ public class PatientFrame extends javax.swing.JFrame {
     private com.toedter.calendar.JCalendar pCalendar;
     private javax.swing.JButton pCheck;
     private javax.swing.JTextField pContact;
-    private javax.swing.JComboBox<Integer> pDentist;
+    private javax.swing.JComboBox<String> pDentist;
     private javax.swing.JTextField pEmail;
     private javax.swing.JTextField pName;
     private javax.swing.JTextArea pNote;

@@ -1,10 +1,9 @@
 package dental;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Patient extends User {
+public class Patient extends User implements PatientAppointmentBooker {
     
     String contact;
     ArrayList<Appointment> userAppointments;
@@ -31,24 +30,13 @@ public class Patient extends User {
 		this.contact = contact;
 	}
 
-	// Methods
-    public void bookAppointment(User dentist, LocalDateTime requestDate, String note) {
+
+    public void bookAppointment(User dentist, LocalDateTime requestDate, String note, String contact) {
         Appointment appointment = new Appointment(this, dentist, requestDate, note);
-        Appointment.addAppointment(appointment);
-        this.userAppointments.add(appointment);
+		Appointment.addAppointment(appointment);
+		this.setContact(contact);
+		this.userAppointments.add(appointment);
     }
-
-	@Override
-	public void approveAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void declineAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void cancelRequest(Appointment appointment) {
@@ -56,21 +44,6 @@ public class Patient extends User {
 		
 	}
 
-	@Override
-	protected ArrayList<Appointment> getApprovedAppointments() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected ArrayList<Appointment> getDeclinedAppointments() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	
 
 	
 

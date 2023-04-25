@@ -1,6 +1,8 @@
 
 package dental;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -42,6 +44,19 @@ public class Login extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
+        
+        ActionListener enterListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // simulate a button click on the loginButton
+                login.doClick();
+            }
+        };
+        
+        
+        logPass.addActionListener(enterListener);
+        logEmail.addActionListener(enterListener);
+        
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,21 +119,15 @@ public class Login extends javax.swing.JFrame {
 
         pack();
     }
-
+    
+    
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {
-//        
-//        User log = new User();
-//        log.setEmail(logEmail.getText());
-//        log.setPassword(String.valueOf(logPass.getPassword()));
-//        log.setType(logCBox.getSelectedItem().toString());
-//        
-//        User temp = new User();
-        
+    
         try {
         	User temp = loginUser(logEmail.getText(), String.valueOf(logPass.getPassword()), logCBox.getSelectedItem().toString());
         	if(temp.getType().equals("Guest")) {
 
-                GuestFrame guest = new GuestFrame(temp);
+                GuestFrame guest = new GuestFrame((Guest)temp);
                 guest.setVisible(true);
                 guest.pack();
                 guest.setLocationRelativeTo(null);
@@ -126,7 +135,7 @@ public class Login extends javax.swing.JFrame {
                 this.dispose();
             } else if(temp.getType().equals("Patient")) {
                 
-                PatientFrame patient = new PatientFrame(temp);
+                PatientFrame patient = new PatientFrame((Patient)temp);
                 patient.setVisible(true);
                 patient.pack();
                 patient.setLocationRelativeTo(null);
@@ -134,7 +143,7 @@ public class Login extends javax.swing.JFrame {
                 this.dispose();
                 
             } else {
-                DentistFrame dentist = new DentistFrame(temp);
+                DentistFrame dentist = new DentistFrame((Dentist)temp);
                 dentist.setVisible(true);
                 dentist.pack();
                 dentist.setLocationRelativeTo(null);
