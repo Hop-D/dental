@@ -465,8 +465,8 @@ public class DentistFrame extends javax.swing.JFrame {
         int rowIndex = jTable4.getSelectedRow();
         
         try {
-        	Message message = Message.getMessageInfo((int)model.getValueAt(rowIndex, 0));
-        	System.out.println(message.getId()+ " " + message.getMessage() +" " + message.getSent());
+        	Message message = Message.getMessageInfo((int)model4.getValueAt(rowIndex, 0));
+        	System.out.println(message.getId()+ " " + message.getMessage() + " " + message.getSent());
 
         	jLabel8.setText("Sent by: " + message.getSender().getName());
             jLabel9.setText("Sender email: " + message.getSender().getEmail());

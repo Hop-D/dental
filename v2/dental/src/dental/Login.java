@@ -25,7 +25,6 @@ public class Login extends javax.swing.JFrame {
         logCBox = new javax.swing.JComboBox<>();
         login = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setText("LOGIN");
@@ -53,6 +52,15 @@ public class Login extends javax.swing.JFrame {
             }
         };
         
+        addWindowListener(new java.awt.event.WindowAdapter() {
+        	public void windowClosing(java.awt.event.WindowEvent e) {
+        		WelcomeClass welcome = new WelcomeClass();
+                welcome.setVisible(true);
+                welcome.pack();
+                welcome.setLocationRelativeTo(null);
+        		dispose();
+        	}
+        });
         
         logPass.addActionListener(enterListener);
         logEmail.addActionListener(enterListener);
@@ -170,45 +178,7 @@ public class Login extends javax.swing.JFrame {
         throw new UserNotFoundException("User not found.");
     }
     
-//    public User setCurrentUser(ArrayList<User> users, String email, String password, String type) {
-//        
-//        User current = new User();
-//        
-//        for(int i = 0; i < users.size(); i++) {
-//            if(users.get(i).getEmail().equals(email) && users.get(i).getPassword().equals(password) && users.get(i).getType().equals(type)) {
-//                current = users.get(i);
-//                return current;
-//            }
-//        }
-//        return current;
-//    }
     
-
-    public static void main(String args[]) {
-
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
-    }
 
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
